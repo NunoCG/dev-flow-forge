@@ -1,11 +1,9 @@
 # DevFlow Forge: Forging developer workflows with automated repository setup
 
-- [DevFlow Forge: Forging developer workflows with automated repository setup](#devflow-forge:-forging-developer-workflows-with-automated-repository-setup)
-  - [Introduction](#introduction)
-  - [Advantages](#advantages)
-  - [Approach](#approach)
-  - [Opportunities and Next steps](#opportunities-and-next-steps)
-  - [Questions that I asked myself](#questions-that-i-asked-myself)
+- [Introduction](#introduction)
+- [Advantages](#advantages)
+- [Approach](#approach)
+- [Opportunities and Next steps](#opportunities-and-next-steps)
 
 ## Introduction
 

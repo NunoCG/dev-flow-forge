@@ -16,7 +16,7 @@
 
 Welcome to the `DevFlow Forge` tool.
 
-This is a tool that allows developers to create github repositorys already with a company/team standard structure, organization, architecture, rules and in the future to have the infratructure already configured. So that the process of seting up a repository for a new app or project would be at a distance of one click.
+This is a tool that allows developers to create github repositories already with a company/team standard structure, organization, architecture, rules and in the future to have the infratructure already configured. So that the process of seting up and configure a repository for a new app or project would be at a distance of one click.
 
 ## Documentation
 

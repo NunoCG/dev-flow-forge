@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  devflowapp:
+    build:
+      context: .
+      dockerfile: ./build/package/docker/devflowapp/Dockerfile
+      args:
+        GO_VERSION: ${GO_VERSION}
+        GO_PORT: ${GO_PORT}
+    env_file:
+      - ./.env
+    ports:
+      - ${GO_PORT}:${GO_PORT}

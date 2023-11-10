@@ -11,6 +11,11 @@ terraform {
   }
 }
 
+provider "aws" {
+  region  = "ap-south-1"
+  profile = "terraformprofile"
+}
+
 resource "github_repository" "repo_config" {
   name        = var.repo_name
   description = var.repo_description

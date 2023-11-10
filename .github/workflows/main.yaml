@@ -12,4 +12,4 @@ jobs:
 
       - name: Use GitHub Actions token
         run: |
-          echo "GitHub Actions token: ${{ secrets.GITHUB_TOKEN }}"
+          # Your workflow script here

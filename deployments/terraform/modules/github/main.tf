@@ -16,6 +16,10 @@ provider "aws" {
   profile = "terraformprofile"
 }
 
+provider "github" {
+  token = var.github_token
+}
+
 resource "github_repository" "repo_config" {
   name        = var.repo_name
   description = var.repo_description

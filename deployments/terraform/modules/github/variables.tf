@@ -19,7 +19,6 @@ variable "repo_visibility" {
 variable "github_token" {
   description = "GitHub personal access token with full access"
   type        = string
-  default     = lookup(env, "GITHUB_TOKEN", "")
   sensitive   = true
 }
 

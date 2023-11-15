@@ -16,8 +16,8 @@ variable "repo_visibility" {
   type        = string
 }
 
-variable "github_token" {
-  description = "GitHub personal access token with full access"
+variable "TF_VAR_github_token" {
+  description = "The github access token with the needed access grants"
   type        = string
   sensitive   = true
 }
@@ -26,4 +26,5 @@ variable "github_actions_secrets" {
   description = "Map of GitHub Actions secrets"
   type        = map(string)
   default     = {}
+  sensitive   = true
 }

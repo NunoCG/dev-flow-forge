@@ -17,7 +17,7 @@ provider "aws" {
 }
 
 provider "github" {
-  token = var.github_token
+  token = var.TF_VAR_github_token
 }
 
 resource "github_repository" "repo_config" {

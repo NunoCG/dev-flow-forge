@@ -8,8 +8,8 @@ variable "repo_description" {
   type        = string
 }
 
-variable "github_token" {
-  description = "GitHub personal access token with full access"
+variable "TF_VAR_github_token" {
+  description = "The github access token with the needed access grants"
   type        = string
   sensitive   = true
 }

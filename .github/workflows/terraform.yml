@@ -3,7 +3,7 @@ name: 'Terraform Workflow'
 on:
   push:
     branches: [ "main" ]
-  pull_request:
+  #pull_request:
 
 permissions:
   contents: read
@@ -12,7 +12,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
+    #environment: production
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -44,7 +44,7 @@ jobs:
 
     # On push to "main", build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+      #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
       env:
         TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}

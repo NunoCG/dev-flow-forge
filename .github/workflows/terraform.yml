@@ -1,54 +1,63 @@
-name: 'Terraform Workflow'
+name: "Terraform Workflow"
 
 on:
   push:
-    branches: [ "main" ]
-  #pull_request:
+    branches: ["main"]
+  # pull_request:
 
 permissions:
   contents: read
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: "Terraform"
     runs-on: ubuntu-latest
-    #environment: production
+    # environment: production
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
 
+    # Define needed variables
+    env:
+      TF_WORKING_DIR: ./deployments/terraform/ # Terraform run directory
+
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    # Install Terraform CLI
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.6.0
+      # Install Terraform CLI
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.6.0
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform init
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt -check
+      # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Format
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform fmt -check
 
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan -input=false
+      # Generates an execution plan for Terraform
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform plan -input=false
 
-    # On push to "main", build or change infrastructure according to Terraform configuration files
-    - name: Terraform Apply
-      #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
-      env:
-        TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
+      # On push to "main", build or change infrastructure according to Terraform configuration files
+      - name: Terraform Apply
+        # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform apply -auto-approve -input=false
+        env:
+          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    # Printing the terraform outputs
-    - name: Print Outputs
-      run: terraform output
+      # Printing the terraform outputs
+      - name: Print Outputs
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform output

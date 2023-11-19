@@ -33,19 +33,10 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_version: 1.6.0
-          #terraform_wrapper: false
-
-      # Debuging
-      - name: Debug
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: |
-          echo "TF_VAR_github_token: $TF_VAR_github_token"
-          echo "repo_name: $repo_name"
-          echo "repo_description: $repo_description"
 
       # Set the GitHub token as an environment variable
       - name: Set GitHub Token
-        run: echo "TF_VAR_github_token=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+        run: echo "TF_VAR_github_token=${{ secrets.TF_VAR_GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init

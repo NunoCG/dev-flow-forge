@@ -33,12 +33,14 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.6.0
-      
-          - name: Debug
-          run: |
-            echo "TF_VAR_github_token: $TF_VAR_github_token"
-            echo "repo_name: $repo_name"
-            echo "repo_description: $repo_description"
+
+      # Debuging
+      - name: Debug
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          echo "TF_VAR_github_token: $TF_VAR_github_token"
+          echo "repo_name: $repo_name"
+          echo "repo_description: $repo_description"
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init

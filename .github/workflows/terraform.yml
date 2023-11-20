@@ -34,16 +34,6 @@ jobs:
         with:
           terraform_version: 1.6.0
 
-      # Set the GitHub token as an environment variable
-      - name: Set GitHub Token
-        run: echo "TF_VAR_github_token=${{ secrets.TF_VAR_GITHUB_TOKEN }}" >> $GITHUB_ENV
-
-      # Set other Terraform variables as environment variables
-      - name: Set Terraform Variables
-        run: |
-          echo "repo_name=your_repo_name" >> $GITHUB_ENV
-          echo "repo_description=your_repo_description" >> $GITHUB_ENV
-
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
@@ -62,7 +52,10 @@ jobs:
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false \
+          -var="repo_name=your_repo_name" \
+          -var="repo_description=your_repo_description" \
+          -var="TF_VAR_github_token=${{ secrets.TF_VAR_GITHUB_TOKEN }}"
 
       # Printing the terraform outputs
       - name: Print Outputs

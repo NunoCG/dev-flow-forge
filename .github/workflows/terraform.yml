@@ -56,10 +56,9 @@ jobs:
       # On push to "main", build or change infrastructure according to Terraform configuration files
       - name: Terraform Apply
         working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform apply -auto-approve -input=false
-        env:
-          repo_name: "your_repo_name" # Set the value here
-          repo_description: "your repo description" # Set the value here
+        run: terraform apply -auto-approve -input=false \
+          -var="repo_name=your_repo_name" \
+          -var="repo_description=your_repo_description"
 
       # Printing the terraform outputs
       - name: Print Outputs

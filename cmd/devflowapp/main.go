@@ -1,22 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"net/http"
+	"os"
 
-	"github.com/NunoCG/dev-flow-forge/internal/app/devflowapp"
+	"github.com/NunoCG/dev-flow-forge/internal/github"
 )
 
 func main() {
-	handler := devflowapp.NewHandler()
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: handler,
+	repoName := "example-repo"
+	repoDescription := "This is a sample repository."
+
+	token := os.Getenv("TF_VAR_GITHUB_TOKEN")
+	if token == "" {
+		log.Fatal("GitHub token not set. Please set TF_VAR_GITHUB_TOKEN environment variable.")
 	}
 
-	log.Println("Server is starting...")
-	err := server.ListenAndServe()
+	client := github.NewGitHubClient(token)
+	err := client.CreateRepository(repoName, repoDescription)
 	if err != nil {
-		log.Fatalf("Server failed to start: %v", err)
+		log.Fatal(err)
 	}
+
+	fmt.Printf("Repository %s created successfully!\n", repoName)
 }

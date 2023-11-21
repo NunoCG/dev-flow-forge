@@ -2,36 +2,45 @@ package github
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v35/github"
 	"golang.org/x/oauth2"
 )
 
-type Client struct {
-	ghClient *github.Client
+type GitHubClient struct {
+	client *github.Client
 }
 
-func NewClient(ghToken string) *Client {
+func NewGitHubClient(token string) *GitHubClient {
+	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: ghToken},
+		&oauth2.Token{AccessToken: token},
 	)
-	tc := oauth2.NewClient(context.Background(), ts)
+	tc := oauth2.NewClient(ctx, ts)
 
-	return &Client{
-		ghClient: github.NewClient(tc),
+	return &GitHubClient{
+		client: github.NewClient(tc),
 	}
 }
 
-func (c *Client) CreateRepo(name string, private bool) (*github.Repository, error) {
-	repo, _, err := c.ghClient.Repositories.Create(context.Background(), "", &github.Repository{
-		Name:    github.String(name),
-		Private: github.Bool(private),
-	})
-	return repo, err
+func (gc *GitHubClient) CreateRepository(repoName, repoDescription string) error {
+	ctx := context.Background()
+	repo := &github.Repository{
+		Name:        github.String(repoName),
+		Description: github.String(repoDescription),
+		// Add more settings as needed
+	}
+
+	_, _, err := gc.client.Repositories.Create(ctx, "", repo)
+	return err
 }
 
-/*
- * This would be where to interact with the GitHub API.
- * Use a GitHub client library for Go to do this, which would take care of things like making HTTP requests
- * to the GitHub API, authentication, etc.
- */
+func (gc *GitHubClient) DeleteRepository(repoName string) error {
+	ctx := context.Background()
+	_, err := gc.client.Repositories.Delete(ctx, "", repoName)
+	if err != nil {
+		return fmt.Errorf("failed to delete repository: %v", err)
+	}
+	return nil
+}

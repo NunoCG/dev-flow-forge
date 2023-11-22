@@ -1,3 +1,3 @@
-output "repository_url" { 
-    value = github_repository.repo_config.html_url 
+output "created_repository_urls" {
+  value = [for repo in local.created_repos : repo.html_url]
 }

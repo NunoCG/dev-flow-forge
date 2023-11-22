@@ -1,0 +1,39 @@
+name: Repository Actions Workflow
+
+on:
+  repository_dispatch:
+    types: [repo-action]
+
+jobs:
+  manage-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+
+      - name: Configure GitHub Token
+        run: echo "GITHUB_TOKEN=${{ secrets.TF_VAR_GITHUB_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Execute Terraform
+        run: |
+          if [ "${{ github.event.client_payload.action }}" = "create" ]; then
+            # Execute Terraform commands for repository creation
+            cd deployments/terraform
+            terraform init
+            terraform fmt
+            terraform plan -var="repo_name=${{ github.event.client_payload.repo_name }}" -var="repo_description=${{ github.event.client_payload.repo_description }}" -var="repo_visibility=${{ github.event.client_payload.repo_visibility }}"
+            terraform apply -auto-approve -var="repo_name=${{ github.event.client_payload.repo_name }}" -var="repo_description=${{ github.event.client_payload.repo_description }}" -var="repo_visibility=${{ github.event.client_payload.repo_visibility }}"
+          elif [ "${{ github.event.client_payload.action }}" = "delete" ]; then
+            # Execute deletion script for repository deletion
+            REPO_NAME="${{ github.event.client_payload.repo_name }}"
+            USER_NAME="NunoCG"  # Replace with your GitHub username
+            GITHUB_TOKEN="${{ secrets.TF_VAR_GITHUB_TOKEN }}"
+
+            ./scripts/terraform/github/delete_repo.sh "$REPO_NAME" "$USER_NAME" "$GITHUB_TOKEN"
+          else
+            echo "Invalid action"
+          fi

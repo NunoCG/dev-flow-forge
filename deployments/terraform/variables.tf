@@ -1,11 +1,12 @@
-variable "repo_name" {
-  description = "The name of the GitHub repository"
-  type        = string
-}
-
-variable "repo_description" {
-  description = "The description of the GitHub repository"
-  type        = string
+variable "repos_to_create" {
+  description = "List of repositories to create"
+  type = list(object({
+    name        = string
+    description = string
+    visibility  = string
+    // You can add more attributes as needed
+  }))
+  default = []
 }
 
 variable "TF_VAR_github_token" {
